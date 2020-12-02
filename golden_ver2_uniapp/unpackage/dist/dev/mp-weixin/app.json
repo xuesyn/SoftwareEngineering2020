@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "pages/vue/index/index",
+    "pages/vue/chatroom/chatroom"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#007AFF",
+    "backgroundColor": "#FFFFFF"
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap61.json"
+}

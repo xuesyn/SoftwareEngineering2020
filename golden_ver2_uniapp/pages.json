@@ -1,0 +1,37 @@
+{
+	"pages": [
+      //vue 版本，切换时可对应注释
+      {
+        "path": "pages/vue/index/index",
+        "style": {
+          "navigationBarTitleText": "Golden Point Game Center"
+        }
+      },
+      {
+        "path": "pages/vue/chatroom/chatroom",
+        "style": {
+          "navigationBarTitleText": "Golden Point Room"
+        }
+      }
+      //nvue版本
+      // ,
+      // {
+      //   "path": "pages/nvue/index/index",
+      //   "style": {
+      //     "navigationBarTitleText": "GoEasy聊天室示例"
+      //   }
+      // },
+      // {
+      //   "path": "pages/nvue/chatroom/chatroom",
+      //   "style": {
+      //     "navigationBarTitleText": "GoEasy直播间"
+      //   }
+      // }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#007AFF",
+		"backgroundColor": "#FFFFFF"
+	}
+}

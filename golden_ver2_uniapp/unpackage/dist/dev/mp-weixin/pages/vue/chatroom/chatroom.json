@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "Golden Point Room",
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup",
+    "uni-fab": "/components/uni-fab/uni-fab",
+    "uni-popup-message": "/components/uni-popup/uni-popup-message",
+    "uni-popup-dialog": "/components/uni-popup/uni-popup-dialog"
+  }
+}

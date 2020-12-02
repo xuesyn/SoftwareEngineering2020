@@ -1,0 +1,212 @@
+
+page {
+        height: 100%;
+}
+uni-page-body {
+        height: 100%;
+}
+.chat-room {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+                flex-direction: column;
+        height: 100%;
+}
+.online-avatar-container {
+        height: 80rpx;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: end;
+        -webkit-justify-content: flex-end;
+                justify-content: flex-end;
+        padding: 28rpx;
+        -webkit-box-shadow: 10rpx 30rpx 50rpx #fff;
+                box-shadow: 10rpx 30rpx 50rpx #fff;
+        z-index: 40;
+}
+.online-avatar-item {
+        width: 80rpx;
+        height: 80rpx;
+        -webkit-border-radius: 40rpx;
+                border-radius: 40rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: rgba(51, 51, 51, 0.3);
+        color: #fff;
+        font-size: 18rpx 28rpx;
+}
+.online-count {
+        width: 80rpx;
+        height: 80rpx;
+        -webkit-border-radius: 40rpx;
+                border-radius: 40rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: rgba(51, 51, 51, 0.3);
+        color: #fff;
+        font-size: 28rpx;
+}
+.online-avatar-item image {
+        width: 80rpx;
+        height: 80rpx;
+		-webkit-border-radius: 50%;
+		        border-radius: 50%;
+}
+.chat-room-container {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+                flex: 1;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+                flex-direction: column;
+}
+.chat-room-box {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+                flex: 1;
+        padding: 10rpx 38rpx;
+        overflow: auto;
+        padding-top: 20rpx;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+}
+.message-box {
+        margin-top: 16rpx;
+}
+.message-item {
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        height: 72rpx;
+        background-color: rgba(196, 196, 196, 0.2);
+        display: inline-block;
+        font-size: 28rpx;
+        -webkit-border-radius: 100rpx;
+                border-radius: 100rpx;
+        padding: 18rpx 30rpx;
+        font-family: Microsoft YaHei UI;
+}
+.user-name {
+        color: #D02129;
+        font-family: Microsoft YaHei UI;
+}
+.user-message {
+        color: #333;
+        font-family: Microsoft YaHei UI;
+}
+.chat-room-input {
+        height: 92rpx;
+        line-height: 92rpx;
+        padding: 28rpx;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+}
+.uni-input {
+        width: 528rpx;
+        background-color: rgba(51, 51, 51, 0.1);
+        height: 92rpx;
+        -webkit-border-radius: 100rpx;
+                border-radius: 100rpx;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        padding: 26rpx 40rpx;
+        font-size: 28rpx;
+}
+.uni-btn {
+        position: absolute;
+        width: 72rpx;
+        height: 72rpx;
+        background: #D02129;
+        right: 10rpx;
+        top: 10rpx;
+        -webkit-border-radius: 72rpx;
+                border-radius: 72rpx;
+        text-align: center;
+        line-height: 72rpx;
+        color: #fff;
+        font-weight: bold;
+        font-size: 32rpx;
+		z-index: 99;
+}
+.heart {
+        width: 80rpx;
+        height: 92rpx;
+        padding: 0 15rpx;
+}
+.rocket {
+        width: 40rpx;
+        height: 92rpx;
+}
+.self {
+        color: #D02129;
+}
+.show-animation {
+        width: 80rpx;
+        height: 320rpx;
+        position: fixed;
+        z-index: 44;
+        left: 50%;
+        bottom: 80rpx;
+        margin: 0 -40rpx;
+        -webkit-box-pack: end;
+        -webkit-justify-content: flex-end;
+                justify-content: flex-end;
+        -webkit-animation: myanimation 2s linear;
+                animation: myanimation 2s linear;
+}
+.prop-heart {
+        height: 80rpx;
+        width: 80rpx;
+}
+.prop-rocket {
+        height: 160rpx;
+        width: 80rpx;
+}
+.qiun-columns {
+		width: 600rpx;
+		-webkit-border-radius: 30rpx;
+		        border-radius: 30rpx;
+		margin-left: 80rpx;
+		margin-bottom: 50rpx;
+		background-color: #fff;
+}
+.qiun-charts {
+		width: 600rpx;
+		height: 400rpx;		
+		-webkit-border-radius: 30rpx;		
+		        border-radius: 30rpx;
+		background-color: #FFFFFF;
+}
+.charts {
+		width: 600rpx;
+		height: 400rpx;
+		-webkit-border-radius: 30rpx;
+		        border-radius: 30rpx;
+		background-color: #FFFFFF;
+}
+@-webkit-keyframes myanimation {
+from {
+            bottom: 80rpx;
+}
+to {
+            bottom: 600rpx;
+}
+}
+@keyframes myanimation {
+from {
+            bottom: 80rpx;
+}
+to {
+            bottom: 600rpx;
+}
+}
+
+

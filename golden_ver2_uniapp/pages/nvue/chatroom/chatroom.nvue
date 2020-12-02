@@ -1,0 +1,290 @@
+<template>
+	<view class="chat-room">
+		<view class="online-avatar-container">
+			
+			<view class="online-avatar-item" v-for="(value, key) in room.onlineUsers.users" :key="key" :style="realignAvatar(key)">
+				<image :src="value.avatar" class="online-avatar-img"></image>
+			</view>
+			<text class="online-count">{{room.onlineUsers.count}}</text>
+		</view>
+		<view class="chat-room-container">
+			<scroll-view class="chat-room-box" scroll-y="true" :scroll-into-view="contentPosition" show-scrollbar="true">
+				<view class="message-box" v-for="(message, key) in room.messages" :key="key" :id="'message-box'+ key">
+					<view class="message-item">
+						<text class="user-name">{{message && message.senderNickname}}: </text>
+						<text :class="message.senderUserId == room.currentUser.id ? 'user-message self' : 'user-message' ">{{message && message.content}}</text>
+					</view>
+				</view>
+			</scroll-view>
+			<view class="chat-room-bottom">
+				<view style="position: relative;">
+					<input class="uni-input" v-model="newMessageContent" placeholder="说点什么..." />
+					<text class="uni-btn" @click="sendMessage(room.MessageType.CHAT,newMessageContent)">↑</text>
+				</view>
+				<image class="heart" @click="sendMessage(room.MessageType.PROP, room.Prop.HEART)" src="../../../static/images/handle-heart.png"></image>
+				<image class="rocket" @click="sendMessage(room.MessageType.PROP, room.Prop.ROCKET)" src="../../../static/images/rokect.png"></image>
+			</view>
+		</view>
+		<view :class="prop.play ? 'show-animation' : 'show-animation hidden'" ref="myanimation">
+			<image class="prop-heart" v-for="(value, key) in 4" :key="key" src="../../../static/images/heart.png" v-if="prop.showPropType == room.Prop.HEART"></image>
+			<image class="prop-rocket" src="../../../static/images/rokect.png" v-if="prop.showPropType == room.Prop.ROCKET"></image>
+		</view>
+	</view>
+</template>
+
+<script>
+	const ChatRoomService =require('../../../lib/chatservice');
+	const animation = weex.requireModule('animation');
+	export default {
+		data () {
+			return {		
+				room : null,
+				prop : {
+					showPropType : 0,
+					play : false,
+					timer : null
+				},
+				newMessageContent : "",
+				contentPosition : '',
+				chatRoomService : null
+			}
+		},
+		onHide () {
+			console.log("room hide")
+		},
+		onLoad(options) {
+			//获取数据
+			var roomToken = JSON.parse(options.roomToken);
+			
+			//设置导航标题
+			uni.setNavigationBarTitle({
+				title: roomToken.roomName
+			});
+
+			//当前用户
+			var currentUser = {
+				id : roomToken.userId,
+				nickname : roomToken.nickname,
+				avatar: roomToken.avatar
+			};
+
+			var room = {
+                id : roomToken.roomId,
+                name : roomToken.roomName
+            };
+
+			//构造chatRoomService
+			this.chatRoomService = new ChatRoomService(room, currentUser);
+            this.chatRoomService.initialWhenNewMessage(this.whenNewMessage);
+            this.chatRoomService.connectGoEasyIM();
+
+			//获取当前聊天室数据
+            this.room = this.chatRoomService.room;
+		},
+		onBackPress () {//返回取消订阅
+			//断开连接
+			this.chatRoomService.quitRoom();
+		},
+		beforeDestroy () {
+			this.chatRoomService.quitRoom();
+		},
+		methods: {
+    		realignAvatar (key) {//头像位置
+				var len = this.room.onlineUsers.users.length-1;
+				if(key == len) {
+					return {
+					}
+				}
+				var p = (len - key)*20 + 20 +'rpx'
+				return {
+					transform:'translateX('+ p +')'
+				}
+			},
+			sendMessage (messageType, content) {//发送消息
+				if(content == "" && messageType == 0) return;
+				var message = {
+					senderNickname : this.room.currentUser.nickname ,
+					type : messageType,
+					content : content
+				}
+				this.chatRoomService.sendMessages(this.room.id, message);
+				this.newMessageContent = ""
+			},
+			whenNewMessage (message) {//新消息监听
+				if(message.type == this.room.MessageType.PROP){
+					this.propAnimation(parseInt(message.content))
+				}
+				setTimeout(() => {
+					this.contentPosition = 'message-box'+(this.room.messages.length-1);
+				}, 300)
+			},
+			propAnimation (type) {//道具动画
+				//动画的实现，可以不用关心
+				var self = this;
+				this.prop.showPropType = type;
+				this.prop.play = true;
+				var $animation = this.$refs.myanimation;
+				animation.transition($animation, {
+					styles : {
+						transform: 'translate(0, -200rpx)'
+					},
+					duration : 2000
+				},function () {
+					self.prop.play = false;
+					setTimeout(() => {
+						animation.transition($animation, {
+							styles : {
+								transform: 'translate(0, 0rpx)'
+							},
+							duration : 0
+						})
+					},300)
+				})
+			}
+		}
+	}
+</script>
+
+<style>
+	.chat-room{
+		flex:1;
+	}
+	.online-avatar-container{
+		height: 140rpx;
+		justify-content: flex-end;
+		/* flex-direction: row-reverse; */
+		padding:28rpx ;
+		box-shadow: 10rpx 30rpx 50rpx #fff;
+		z-index: 40;
+		flex-direction: row;
+	}
+	.online-avatar-item{
+		width:80rpx;
+		height:80rpx;
+		border-radius: 40rpx;
+		line-height: 80rpx;
+		background-color: rgba(51,51,51,0.3);
+		color: #fff;
+		font-size:28rpx;
+	}
+	.online-count{
+		width:80rpx;
+		height:80rpx;
+		border-radius: 40rpx;
+		text-align: center;
+		line-height: 80rpx;
+		background-color: rgba(51,51,51,0.3);
+		color: #fff;
+		font-size:28rpx;
+	}
+	.online-avatar-img{
+		width:80rpx;
+		height: 80rpx;
+	}
+	.chat-room-container{
+		flex:1;
+	}
+	.chat-room-box{
+		padding-top:20rpx;
+		padding-bottom: 30rpx;
+		padding-left: 38rpx;
+		padding-right: 38rpx;
+		flex: 1;
+	}
+	.message-box{
+		margin-top:16rpx;
+	}
+	.message-item{
+		height: 72rpx;
+		line-height: 36rpx;
+		flex-direction: row;
+		align-items: flex-start;
+	}
+	.user-name{
+		color: #D02129;
+		font-size: 28rpx;
+		border-top-left-radius : 50rpx;
+		border-bottom-left-radius : 50rpx;
+		background-color: rgba(196,196,196,0.2);
+		padding-top: 18rpx;
+		padding-left: 30rpx;
+		padding-bottom: 18rpx;
+		font-family: Microsoft YaHei UI;
+	}
+	.user-message{
+		color: #333;
+		font-size: 28rpx;
+		font-family: Microsoft YaHei UI;
+		padding-top: 18rpx;
+		padding-right: 30rpx;
+		padding-bottom: 18rpx;
+		border-top-right-radius : 50rpx;
+		border-bottom-right-radius : 50rpx;
+		background-color: rgba(196,196,196,0.2);
+	}
+	.chat-room-bottom{
+		height: 112rpx;
+		line-height:112rpx;
+		padding-left:28rpx;
+		padding-right: 28rpx;
+		flex-direction: row;
+		align-items: center;
+	}
+	.uni-input{
+		width:528rpx;
+		background-color: rgba(51,51,51,0.1);
+		height:92rpx;
+		border-radius: 100rpx;
+		font-size: 28rpx;
+		padding:26rpx 40rpx ;
+	}
+	.uni-btn{
+		position: absolute;
+		width: 72rpx;
+		height: 72rpx;
+		background-color: #D02129;
+		right: 10rpx;
+		top:10rpx;
+		border-radius: 72rpx;
+		line-height: 72rpx;
+		color: #FFFFFF;
+		text-align: center;
+		font-weight: bold;
+		font-size: 32rpx;
+	}
+	.heart{
+		width:90rpx;
+		height: 92rpx;
+		padding:0 15rpx;
+	}
+	.rocket{
+		width:50rpx;
+		height: 92rpx;
+	}
+	.self{
+		color: #D02129;
+	}
+	.show-animation{
+		width:80rpx;
+		height: 320rpx;
+		z-index: 44;
+		bottom:200rpx;
+		left:400rpx;
+		margin:0 -40rpx;
+		position: fixed;
+		justify-content: flex-end;
+		opacity: 1;
+	}
+	.hidden {
+		opacity: 0;
+	}
+	.prop-heart{
+		height: 80rpx;
+		width:80rpx;
+	}
+	.prop-rocket{
+		height:160rpx;
+		width:80rpx;
+	}
+
+</style>
